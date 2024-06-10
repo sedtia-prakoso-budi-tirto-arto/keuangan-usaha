@@ -2,6 +2,17 @@
   <div class="container">
     <h1>Ubah Perhitungan Modal Harian</h1>
 
+    <!-- Tambahkan input tanggal dengan gaya -->
+  <div class="input-group">
+    <label for="tanggal">Tanggal:</label>
+    <div class="date-input">
+      <input type="date" id="tanggal" v-model="tanggal" class="date-input-field">
+      <span class="date-input-icon">
+        <!-- <i class="fas fa-calendar-alt"></i> -->
+      </span>
+    </div>
+  </div>
+
     <div class="input-container">
       <div class="input-group">
         <label for="jumlahTelur">Jumlah Telur:</label>
@@ -49,6 +60,7 @@ export default {
       jumlahPorsi: 0,
       hasil: "",
       omset: 0,
+      tanggal: '',
       dataList: [],
       pancong: {
         Tiramisu: 0,
@@ -231,6 +243,7 @@ export default {
       jumlahPorsi: this.jumlahPorsi,
       jumlahTelur: this.jumlahTelur,
       Omset: this.omset,
+      tanggal: this.tanggal,
       totalModal: totalHarga
     });
       } catch (error) {

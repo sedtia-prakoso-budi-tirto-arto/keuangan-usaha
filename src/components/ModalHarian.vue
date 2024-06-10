@@ -2,6 +2,18 @@
   <div class="container">
     <h1>Perhitungan Modal Harian</h1>
 
+    <!-- Tambahkan input tanggal dengan gaya -->
+  <div class="input-group">
+    <label for="tanggal">Tanggal:</label>
+    <div class="date-input">
+      <input type="date" id="tanggal" v-model="tanggal" class="date-input-field">
+      <span class="date-input-icon">
+        <!-- <i class="fas fa-calendar-alt"></i> -->
+      </span>
+    </div>
+  </div>
+
+
     <div class="input-container">
       <div class="input-group">
         <label for="jumlahTelur">Jumlah Telur:</label>
@@ -49,6 +61,7 @@ export default {
       jumlahPorsi: 0,
       hasil: "",
       omset: 0,
+      tanggal: '',
       dataList: [],
       pancong: {
         Tiramisu: 0,
@@ -217,7 +230,7 @@ export default {
         const formattedTime = `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
 
         // Menampilkan hasil total harga
-        hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;
+        // hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;
         this.hasil = hasilPerhitungan;
 
         // Menampilkan SweetAlert berhasil
@@ -230,7 +243,8 @@ export default {
           jumlahTelur: this.jumlahTelur,
           jumlahPorsi: this.jumlahPorsi,
           totalModal: totalHarga,
-          Omset: this.omset
+          Omset: this.omset,
+          tanggal: this.tanggal
         });
 
         // Log ID dokumen baru yang dibuat
@@ -255,9 +269,6 @@ export default {
   }
 }
 </script>
-
-
-
 
 <style scoped>
 /* Container styling */
@@ -324,6 +335,34 @@ label {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
+}
+
+/* Gaya tambahan untuk input tanggal */
+.date-input {
+  position: relative;
+  width: 100%;
+}
+
+.date-input-field {
+  width: calc(100% - 30px);
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.date-input-icon {
+  position: relative;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* Saat hover, warna ikon akan menjadi lebih terang */
+.date-input:hover .date-input-icon {
+  color: #555;
 }
 
 /* Button styling */
