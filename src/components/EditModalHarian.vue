@@ -133,14 +133,6 @@ export default {
     },
     async hitungTotalHarga() {
       // Validasi input
-      if (isNaN(this.tanggal) || this.tanggal <= 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Isikan tanggal.'
-      });
-      return;
-    }
     if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
       Swal.fire({
         icon: 'error',
