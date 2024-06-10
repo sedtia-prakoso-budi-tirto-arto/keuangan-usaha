@@ -5,6 +5,7 @@
       <table>
         <thead>
           <tr>
+            <th>Waktu Input</th>
             <th>Tanggal</th>
             <th>Jumlah Telur</th>
             <th>Jumlah Porsi</th>
@@ -17,6 +18,7 @@
         <tbody>
           <tr v-for="(data, index) in dataList" :key="index" class="table-row">
             <td>{{ data.date }}</td>
+            <td>{{ data.tanggal }}</td>
             <td>{{ data.jumlahTelur }}</td>
             <td>{{ data.jumlahPorsi }}</td>
             <td>{{ formatRupiah(data.totalModal) }}</td>
