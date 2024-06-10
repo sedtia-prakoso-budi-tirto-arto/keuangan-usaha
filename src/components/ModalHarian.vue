@@ -211,9 +211,9 @@ export default {
 <style scoped>
 /* Container styling */
 .container {
-  max-width: 800px; /* Adjusted width to fit more content */
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -222,14 +222,15 @@ export default {
 
 /* Heading styling */
 h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
   color: #333;
 }
 
 /* Flexbox container for inputs */
 .input-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
@@ -252,15 +253,15 @@ label {
 /* Input styling */
 .input-group, .menu-group {
   margin-bottom: 1rem;
-  flex-basis: calc(33.333% - 10px); /* Three items per row */
+  flex-basis: calc(50% - 10px); /* Two items per row */
 }
 .input-group label, .menu-group label {
   display: inline-block;
-  width: 120px; /* Adjust as needed */
+  width: auto;
   text-align: left;
 }
 .input-group input[type="number"], .menu-group input[type="number"] {
-  width: 150px; /* Adjust as needed */
+  width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -294,4 +295,19 @@ button:hover {
   color: #333;
   font-size: 1rem;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .input-group, .menu-group {
+    flex-basis: calc(100% - 10px); /* Single item per row */
+  }
+  h1 {
+    font-size: 1.25rem;
+  }
+  button {
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
 </style>
+
