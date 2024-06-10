@@ -141,8 +141,21 @@ export default {
       console.log("Navigating to EditModalHarian with ID:", id)
     },
     navigateToHome() {
-      this.$router.push({ name: 'ModalHarian' })
-    }
+        Swal.fire({
+            title: 'Memuat Modal Harian...',
+            text: 'Silakan tunggu',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        setTimeout(() => {
+            Swal.close();
+            // Mengarahkan ke rute KelolaModal
+            this.$router.push({ name: 'ModalHarian' });
+        }, 750);
+      }
   }
 }
 </script>

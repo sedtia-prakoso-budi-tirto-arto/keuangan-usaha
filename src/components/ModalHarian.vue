@@ -281,9 +281,21 @@ export default {
       });
     },
     navigateToKelola() {
-      // Mengarahkan ke rute KelolaModal
-      this.$router.push({ name: 'KelolaModal' });
-    }
+        Swal.fire({
+            title: 'Memuat Kelola...',
+            text: 'Silakan tunggu',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        setTimeout(() => {
+            Swal.close();
+            // Mengarahkan ke rute KelolaModal
+            this.$router.push({ name: 'KelolaModal' });
+        }, 750);
+      }
   }
 }
 </script>
