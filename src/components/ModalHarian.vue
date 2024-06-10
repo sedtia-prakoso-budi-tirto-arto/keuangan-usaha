@@ -107,10 +107,10 @@ export default {
     }
   },
   mounted() {
-    // Periksa apakah pesan selamat datang pernah ditampilkan sebelumnya
-    const welcomeMessageShown = localStorage.getItem('welcomeMessageShown');
+    // Periksa apakah pesan selamat datang pernah ditampilkan pada sesi ini
+    const welcomeMessageShown = sessionStorage.getItem('welcomeMessageShown');
 
-    // Jika belum pernah ditampilkan sebelumnya, tampilkan pesan selamat datang
+    // Jika belum pernah ditampilkan pada sesi ini, tampilkan pesan selamat datang
     if (!welcomeMessageShown) {
       Swal.fire({
         title: 'Selamat Datang!',
@@ -119,8 +119,8 @@ export default {
         confirmButtonText: 'OK'
       });
 
-      // Tandai bahwa pesan selamat datang sudah ditampilkan
-      localStorage.setItem('welcomeMessageShown', 'true');
+      // Tandai bahwa pesan selamat datang sudah ditampilkan pada sesi ini
+      sessionStorage.setItem('welcomeMessageShown', 'true');
     }
   },
   methods: {
@@ -385,6 +385,7 @@ label {
 
 /* Button styling */
 button {
+  margin-left: 1rem;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -420,6 +421,7 @@ button:hover {
     font-size: 1.25rem;
   }
   button {
+    margin-left: -1rem;
     width: 100%;
     padding: 0.5rem;
   }
