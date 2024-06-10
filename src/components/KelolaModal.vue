@@ -40,6 +40,7 @@
 <script>
 import { db } from '../../firebase'
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import Swal from 'sweetalert2'
 
 export default {
   data() {
@@ -68,15 +69,30 @@ export default {
       }
     },
     async deleteData(index) {
-      try {
-        const idToDelete = this.dataList[index].id
-        await deleteDoc(doc(db, 'history', idToDelete))
-        this.dataList.splice(index, 1)
-        console.log('Data ID ' + idToDelete + ' berhasil dihapus')
-      } catch (error) {
-        console.error('Error deleting document: ', error)
-      }
-    },
+    try {
+      const idToDelete = this.dataList[index].id;
+      await deleteDoc(doc(db, 'history', idToDelete));
+      this.dataList.splice(index, 1);
+      console.log('Data ID ' + idToDelete + ' berhasil dihapus');
+
+      // Tampilkan pesan sukses dengan SweetAlert
+      Swal.fire({
+        icon: 'success',
+        title: 'Data berhasil dihapus',
+        text: 'Data ID ' + idToDelete + ' berhasil dihapus'
+      });
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+
+      // Tampilkan pesan kesalahan dengan SweetAlert
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'
+      });
+    }
+  },
+
     calculateNettProfit(Omset, totalModal) {
       return Omset - totalModal - 27000
     },

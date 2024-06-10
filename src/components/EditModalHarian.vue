@@ -102,14 +102,30 @@ export default {
     },
     async hitungTotalHarga() {
       // Validasi input
-  if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
-    this.hasil = "Jumlah telur harus angka positif.";
-    return;
-  }
-  if (isNaN(this.jumlahPorsi) || this.jumlahPorsi <= 0) {
-    this.hasil = "Jumlah porsi harus angka positif.";
-    return;
-  }
+    if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Jumlah telur harus angka positif.'
+      });
+      return;
+    }
+    if (isNaN(this.jumlahPorsi) || this.jumlahPorsi <= 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Jumlah porsi harus angka positif.'
+      });
+      return;
+    }
+    if (isNaN(this.omset) || this.omset <= 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Omset harus angka positif.'
+      });
+      return;
+    }
 
   // Fungsi untuk mendapatkan harga bahan tertentu dari data dokumen
   const getHargaBahan = (data, bahan) => {
