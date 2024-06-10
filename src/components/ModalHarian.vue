@@ -36,7 +36,7 @@
     </div>
 
     <div class="mb-4">
-      <h2>Menu Pancong</h2>
+      <h2>Menu Pancong</h2><br>
       <div class="row">
         <div class="col-6" v-for="(value, menu) in pancong" :key="menu">
           <div class="mb-3">
@@ -48,7 +48,7 @@
     </div>
 
     <div class="mb-4">
-      <h2>Topping</h2>
+      <h2>Topping</h2><br>
       <div class="row">
         <div class="col-6" v-for="(value, menu) in topping" :key="menu">
           <div class="mb-3">
