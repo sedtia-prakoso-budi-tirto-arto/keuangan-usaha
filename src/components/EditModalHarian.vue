@@ -116,6 +116,7 @@ export default {
         if (docSnap.exists()) {
           const data = docSnap.data();
           console.log(data);
+          this.tanggal = data.tanggal;
           this.omset = data.Omset || 0;
           this.jumlahTelur = data.jumlahTelur || 0; // Mengatur jumlahTelur sesuai data dokumen atau default 0 jika tidak ada
           this.jumlahPorsi = data.jumlahPorsi || 0; // Mengatur jumlahPorsi sesuai data dokumen atau default 0 jika tidak ada
