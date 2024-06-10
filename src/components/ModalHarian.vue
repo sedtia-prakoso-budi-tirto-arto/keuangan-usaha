@@ -126,11 +126,19 @@ export default {
   methods: {
     async hitungTotalHarga() {
       // Validasi input
+    if (isNaN(this.tanggal) || this.tanggal <= 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Isikan tanggal.'
+      });
+      return;
+    }
     if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Jumlah telur harus angka positif.'
+        text: 'Isikan jumlah telur.'
       });
       return;
     }
@@ -138,7 +146,7 @@ export default {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Jumlah porsi harus angka positif.'
+        text: 'Isikan jumlah porsi terjual.'
       });
       return;
     }
@@ -146,7 +154,7 @@ export default {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Omset harus angka positif.'
+        text: 'Isikan omset.'
       });
       return;
     }
