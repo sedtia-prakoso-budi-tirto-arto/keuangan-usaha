@@ -206,7 +206,7 @@ export default {
           });
         });
 
-        totalHarga = totalHarga + totalGlaze + totalAlat + totalTopping;
+        totalHarga = totalHarga + totalGlaze + totalAlat + totalTopping + 27000;
 
         // Menampilkan hasil total harga
         hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;

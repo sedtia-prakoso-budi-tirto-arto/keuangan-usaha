@@ -1,6 +1,12 @@
 <template>
   <div class="container">
     <button class="back-btn" @click="navigateToHome">Home</button>
+    <div class="total-profit">
+      Total Nett Profit: <span class="highlight">{{ formatRupiah(totalNettProfit) }}</span>
+    </div>
+    <div class="total-sewa">
+      Total Sewa: <span class="highlight">{{ formatRupiah(totalSewa) }}</span>
+    </div>
     <div class="table-container">
       <table>
         <thead>
@@ -50,10 +56,28 @@ export default {
       dataList: []
     }
   },
+  computed: {
+    totalNettProfit() {
+      return this.dataList.reduce((total, data) => {
+        return total + this.calculateNettProfit(data.Omset, data.totalModal);
+      }, 0);
+    },
+    totalSewa() {
+      const startTanggal = this.dataList[this.dataList.length - 1]?.tanggal; // Ambil tanggal terakhir dari data
+      const endTanggal = this.dataList[0]?.tanggal; // Ambil tanggal pertama dari data
+      if (!startTanggal || !endTanggal) return 0; // Jika tidak ada data, kembalikan 0
+      const diffInDays = this.getDifferenceInDays(new Date(startTanggal), new Date(endTanggal));
+      return diffInDays * 27000; // Hitung total sewa
+    }
+  },
   created() {
     this.fetchData()
   },
   methods: {
+    getDifferenceInDays(startTanggal, endTanggal) {
+      const oneDay = 24 * 60 * 60 * 1000; // Satu hari dalam milidetik
+      return Math.round(Math.abs((startTanggal - endTanggal) / oneDay));
+    },
     async fetchData() {
       try {
         const querySnapshot = await getDocs(collection(db, 'history'))
@@ -63,7 +87,7 @@ export default {
           dataList.push({ id, ...doc.data() })
         })
         
-        dataList.sort((a, b) => new Date(b.date) - new Date(a.date))
+        dataList.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal))
         
         this.dataList = dataList
       } catch (error) {
@@ -184,6 +208,27 @@ th {
   display: flex;
   justify-content: center;
   gap: 5px;
+}
+
+.total-profit {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.total-profit .highlight {
+  color: #28a745; /* Warna hijau */
+}
+
+.total-sewa {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.total-profit .highlight,
+.total-sewa .highlight {
+  color: #28a745; /* Warna hijau */
 }
 
 .back-btn {
