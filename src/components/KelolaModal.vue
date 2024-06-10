@@ -10,7 +10,7 @@
             <th>Jumlah Porsi</th>
             <th>Total Modal</th>
             <th>Omset</th>
-            <th>Nett Profit</th> <!-- Tambahkan kolom baru untuk Nett Profit -->
+            <th>Nett Profit</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -21,7 +21,7 @@
             <td>{{ data.jumlahPorsi }}</td>
             <td>{{ formatRupiah(data.totalModal) }}</td>
             <td>{{ formatRupiah(data.Omset) }}</td>
-            <td>{{ formatRupiah(calculateNettProfit(data.Omset, data.totalModal)) }}</td> <!-- Tampilkan Nett Profit -->
+            <td>{{ formatRupiah(calculateNettProfit(data.Omset, data.totalModal)) }}</td>
             <td>
               <div class="action-buttons">
                 <router-link :to="{ name: 'EditModalHarian', params: { id: data.id } }" class="action-btn edit-btn">
@@ -60,10 +60,8 @@ export default {
           dataList.push({ id, ...doc.data() })
         })
         
-        // Mengurutkan data berdasarkan tanggal terbaru
         dataList.sort((a, b) => new Date(b.date) - new Date(a.date))
         
-        // Memperbarui dataList
         this.dataList = dataList
       } catch (error) {
         console.error('Error fetching documents: ', error)
@@ -109,15 +107,17 @@ export default {
 
 <style scoped>
 .container {
-  width: 90%;
+  width: 100%;
   padding: 20px;
-  max-width: 1000px; /* Perlebar kontainer */
+  max-width: 1000px;
   margin: 0 auto;
+  background-color: #ffffff;
+  color: #333;
 }
 
 .table-container {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  overflow-x: auto;
 }
 
 table {
@@ -127,7 +127,7 @@ table {
 
 th, td {
   border: 1px solid #ddd;
-  padding: 12px; /* Tambahkan padding agar lebih luas */
+  padding: 12px;
   text-align: left;
 }
 
@@ -155,7 +155,6 @@ th {
 
 .delete-btn {
   margin-left: 5px;
-  width: 38px;
   background-color: #dc3545;
 }
 
@@ -165,7 +164,8 @@ th {
 
 .action-buttons {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 5px;
 }
 
 .back-btn {
@@ -183,6 +183,44 @@ th {
 .back-btn:hover {
   background-color: #0056b3;
 }
+
+@media (max-width: 768px) {
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  table, th, td {
+    font-size: 0.9rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .back-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  th, td {
+    padding: 8px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .action-btn {
+    margin: 2px 0;
+  }
+
+  .back-btn {
+    width: 100%;
+    padding: 10px;
+  }
+}
 </style>
-
-

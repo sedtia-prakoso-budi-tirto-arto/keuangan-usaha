@@ -1,16 +1,39 @@
 <template>
   <div class="container">
     <h1>Ubah Perhitungan Modal Harian</h1>
-    <label for="jumlahTelur">Jumlah Telur:</label>
-    <input type="number" v-model.number="jumlahTelur" min="1" id="jumlahTelur">
+
+    <div class="input-container">
+      <div class="input-group">
+        <label for="jumlahTelur">Jumlah Telur:</label>
+        <input type="number" id="jumlahTelur" v-model="jumlahTelur">
+      </div>
+
+      <div class="input-group">
+        <label for="jumlahPorsi">Jumlah Porsi:</label>
+        <input type="number" id="jumlahPorsi" v-model="jumlahPorsi">
+      </div>
+      
+      <div class="input-group">
+        <label for="omset">Omset:</label>
+        <input type="number" id="omset" v-model="omset">
+      </div>
+    </div>
+
+    <div class="menu-container">
+      <div class="menu-group" v-for="(value, menu) in pancong" :key="menu">
+        <label :for="menu">{{ menu }}:</label>
+        <input type="number" :id="menu" v-model="pancong[menu]">
+      </div>
+      <div class="menu-group" v-for="(value, menu) in topping" :key="menu">
+        <label :for="menu">{{ menu }}:</label>
+        <input type="number" :id="menu" v-model="topping[menu]">
+      </div>
+    </div>
     
-    <label for="jumlahPorsi">Jumlah Porsi:</label>
-    <input type="number" v-model.number="jumlahPorsi" min="1" id="jumlahPorsi">
-    
-    <button @click="hitungTotalHarga">Update Modal</button>
+    <button @click="hitungTotalHarga">Update Total Modal</button>
     <button @click="navigateToKelola" style="margin-left: 10px;">Kelola</button>
     
-    <div v-html="hasil" class="hasil"></div>
+    <div class="hasil" v-html="hasil"></div>
   </div>
 </template>
 
@@ -23,7 +46,32 @@ export default {
     return {
       jumlahTelur: 0,
       jumlahPorsi: 0,
-      hasil: ""
+      hasil: "",
+      omset: 0,
+      dataList: [],
+      pancong: {
+        Tiramisu: 0,
+        Cappucino: 0,
+        Coklat: 0,
+        Chococrunchy: 0,
+        Meses_Susu: 0,
+        Keju_Susu: 0,
+        Strawberry: 0,
+        Greentea: 0,
+        Cheese: 0,
+        Redvelvet: 0,
+        Taro: 0,
+        Milky: 0
+      },
+      topping: {
+        Meses: 0,
+        Oreo: 0,
+        Keju: 0,
+        Red: 0,
+        Matcha: 0,
+        Chocochips: 0,
+        Kacang: 0
+      }
     };
   },
   async mounted() {
@@ -39,6 +87,7 @@ export default {
         if (docSnap.exists()) {
           const data = docSnap.data();
           console.log(data);
+          this.omset = data.Omset || 0;
           this.jumlahTelur = data.jumlahTelur || 0; // Mengatur jumlahTelur sesuai data dokumen atau default 0 jika tidak ada
           this.jumlahPorsi = data.jumlahPorsi || 0; // Mengatur jumlahPorsi sesuai data dokumen atau default 0 jika tidak ada
           this.hasil = data.modalInfo;
@@ -51,63 +100,119 @@ export default {
       }
     },
     async hitungTotalHarga() {
-      if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
-        this.hasil = "Jumlah telur harus angka positif.";
-        return;
+      // Validasi input
+  if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
+    this.hasil = "Jumlah telur harus angka positif.";
+    return;
+  }
+  if (isNaN(this.jumlahPorsi) || this.jumlahPorsi <= 0) {
+    this.hasil = "Jumlah porsi harus angka positif.";
+    return;
+  }
+
+  // Fungsi untuk mendapatkan harga bahan tertentu dari data dokumen
+  const getHargaBahan = (data, bahan) => {
+    return data[bahan] || null; // Mengembalikan harga bahan atau null jika bahan tidak ada
+  };
+
+  try {
+    // Mendapatkan snapshot dokumen dari koleksi "modal"
+    const querySnapshot = await getDocs(collection(db, "modal"));
+
+    // Inisialisasi total harga
+    let totalGlaze = 0;
+    let totalTopping = 0;
+    let totalAlat = 0;
+    let totalHarga = 0;
+    let hasilPerhitungan = '';
+
+    // Iterasi setiap dokumen dalam snapshot
+    querySnapshot.forEach((doc) => {
+      // Mendapatkan data dokumen
+      const data = doc.data();
+
+      // Mendapatkan harga telur
+      const hargaTelur = getHargaBahan(data, "telur");
+
+      if (hargaTelur !== null) {
+        // Iterasi setiap bahan dalam data dokumen
+        for (const [bahan, harga] of Object.entries(data)) {
+          if (harga && !isNaN(harga)) {
+            // Menghitung total harga setiap bahan dikali jumlah telur
+            const totalHargaBahan = harga * this.jumlahTelur;
+            hasilPerhitungan += `${bahan}: ${harga} * ${this.jumlahTelur} = ${totalHargaBahan}<br>`;
+            // Menambahkan ke total harga
+            totalHarga += totalHargaBahan;
+          }
+        }
       }
-      if (isNaN(this.jumlahPorsi) || this.jumlahPorsi <= 0) {
-        this.hasil = "Jumlah porsi harus angka positif.";
-        return;
-      }
 
-      const getHargaBahan = (data, bahan) => {
-        return data[bahan] || null;
-      };
+      const alat =["foam", "sendok"];
+      const glaze = ["Tiramisu", "Cappucino", "Coklat", "Chococrunchy", "Meses Susu", "Keju Susu", "Strawberry", "Greentea", "Cheese", "Redvelvet", "Taro", "Milky"];
+      const topping = ["Meses", "Oreo", "Kacang", "Red Crumble", "Matcha Crumble", "Chocochips", "Keju"];
 
-      try {
-        const querySnapshot = await getDocs(collection(db, "modal"));
-        let totalHarga = 0;
-        let hasilPerhitungan = '';
+      glaze.forEach(nama => {
+        const harga = getHargaBahan(data, nama);
+        const jumlah = this.pancong[nama] || 0;
+        
+        if (harga !== null && jumlah > 0) {
+          const Glaze = harga * jumlah;
+          hasilPerhitungan += `${nama}: ${harga} * ${jumlah} = ${Glaze}<br>`;
+          totalGlaze += Glaze;
+        }
+      });
 
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const hargaTelur = getHargaBahan(data, "telur");
+      topping.forEach(nama => {
+        const harga = getHargaBahan(data, nama);
+        const jumlah = this.topping[nama] || 0;
+        
+        if (harga !== null && jumlah > 0) {
+          const Topping = harga * jumlah;
+          hasilPerhitungan += `${nama}: ${harga} * ${jumlah} = ${Topping}<br>`;
+          totalTopping += Topping;
+        }
+      });
 
-          if (hargaTelur !== null) {
-            for (const [bahan, harga] of Object.entries(data)) {
-              if (harga && !isNaN(harga)) {
-                const totalHargaBahan = harga * this.jumlahTelur;
-                hasilPerhitungan += `${bahan}: ${harga} * ${this.jumlahTelur} = ${totalHargaBahan}<br>`;
-                totalHarga += totalHargaBahan;
-              }
-            }
-          }
+      alat.forEach(nama => {
+        const harga = getHargaBahan(data, nama);       
+        if (harga !== null && this.jumlahPorsi > 0) {
+          const Alat = harga * this.jumlahPorsi;
+          hasilPerhitungan += `${nama}: ${harga} * ${this.jumlahPorsi} = ${Alat}<br>`;
+          totalAlat += Alat;
+        }
+      });
+    });
 
-          const hargaFoam = getHargaBahan(data, "foam");
-          const hargaBahanLain = getHargaBahan(data, "sendok");
+    totalHarga = totalHarga + totalGlaze + totalAlat + totalTopping;
 
-          if (hargaFoam !== null && this.jumlahPorsi > 0) {
-            const totalHargaFoam = hargaFoam * this.jumlahPorsi;
-            hasilPerhitungan += `foam: ${hargaFoam} * ${this.jumlahPorsi} = ${totalHargaFoam}<br>`;
-            totalHarga += totalHargaFoam;
-          }
+    // Menampilkan hasil total harga
+    hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;
+    this.hasil = hasilPerhitungan;
 
-          if (hargaBahanLain !== null && this.jumlahPorsi > 0) {
-            const totalHargaBahanLain = hargaBahanLain * this.jumlahPorsi;
-            hasilPerhitungan += `sendok: ${hargaBahanLain} * ${this.jumlahPorsi} = ${totalHargaBahanLain}<br>`;
-            totalHarga += totalHargaBahanLain;
-          }
-        });
+    // Mendapatkan tanggal dan waktu saat ini
+    const now = new Date();
 
-        hasilPerhitungan += `Total Modal: ${totalHarga}<br>Porsi Terjual: ${this.jumlahPorsi}`;
-        this.hasil = hasilPerhitungan;
+    // Mendapatkan bagian-bagian waktu
+    const hours = now.getHours().toString().padStart(2, '0'); // Jam dalam format 2 digit (00-23)
+    const minutes = now.getMinutes().toString().padStart(2, '0'); // Menit dalam format 2 digit (00-59)
+    const seconds = now.getSeconds().toString().padStart(2, '0'); // Detik dalam format 2 digit (00-59)
+    const day = now.getDate().toString().padStart(2, '0'); // Hari dalam format 2 digit (01-31)
+    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Bulan dalam format 2 digit (01-12), perlu ditambah 1 karena Januari dimulai dari 0
+    const year = now.getFullYear(); // Tahun dalam format 4 digit (misalnya: 2024)
 
-        const timestamp = new Date().toISOString();
-        const documentId = this.$route.params.id;
-        await updateDoc(doc(db, "history", documentId), {
-          date: timestamp,
-          modalInfo: this.hasil
-        });
+    // Format waktu sesuai dengan format yang diinginkan
+    const formattedTime = `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+
+   const documentId = this.$route.params.id;
+
+    await updateDoc(doc(db, "history", documentId), {
+      date: formattedTime,
+      modalInfo: this.hasil,
+      jumlahPorsi: this.jumlahPorsi,
+      jumlahTelur: this.jumlahTelur,
+      Omset: this.omset,
+      totalModal: totalHarga
+    });
       } catch (error) {
         console.error("Error getting documents: ", error);
         this.hasil = "Terjadi kesalahan saat mengambil data.";
@@ -122,22 +227,40 @@ export default {
 </script>
 
 <style scoped>
+/* Container styling */
 .container {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
+/* Heading styling */
 h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
   color: #333;
 }
 
+/* Flexbox container for inputs */
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Flexbox container for menu inputs */
+.menu-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+/* Label styling */
 label {
   display: block;
   margin-bottom: 0.5rem;
@@ -145,16 +268,27 @@ label {
   color: #555;
 }
 
-input[type="number"] {
-  width: calc(100% - 2rem);
-  padding: 0.5rem;
+/* Input styling */
+.input-group, .menu-group {
   margin-bottom: 1rem;
+  flex-basis: calc(50% - 10px); /* Two items per row */
+}
+.input-group label, .menu-group label {
+  display: inline-block;
+  width: auto;
+  text-align: left;
+}
+.input-group input[type="number"], .menu-group input[type="number"] {
+  width: 100%;
+  padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
 }
 
+/* Button styling */
 button {
+  margin-top: 1rem;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   color: #fff;
@@ -169,6 +303,7 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* Result styling */
 .hasil {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -178,4 +313,19 @@ button:hover {
   color: #333;
   font-size: 1rem;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .input-group, .menu-group {
+    flex-basis: calc(100% - 10px); /* Single item per row */
+  }
+  h1 {
+    font-size: 1.25rem;
+  }
+  button {
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
 </style>
+
