@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h1 class="mb-4">Perhitungan Modal Harian</h1>
+    <div class="mb-4">
+      <h2>Ubah Modal Harian</h2>
+    </div>
 
     <!-- Tambahkan input tanggal dengan gaya -->
     <div class="mb-3">
