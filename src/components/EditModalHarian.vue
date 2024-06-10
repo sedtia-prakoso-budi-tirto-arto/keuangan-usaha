@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <button @click="hitungTotalHarga" class="btn btn-primary">Hitung Total Modal</button>
+    <button @click="hitungTotalHarga" class="btn btn-primary">Update Total Modal</button>
     <button class="btn btn-secondary" @click="navigateToKelola">Kelola</button>
 
     <div class="hasil mt-4" v-html="hasil"></div>
@@ -279,8 +279,20 @@ export default {
       });
     },
     navigateToKelola() {
-        // Mengarahkan ke rute KelolaModal
-        this.$router.push({ name: 'KelolaModal' });
+        Swal.fire({
+            title: 'Memuat Kelola...',
+            text: 'Silakan tunggu',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        setTimeout(() => {
+            Swal.close();
+            // Mengarahkan ke rute KelolaModal
+            this.$router.push({ name: 'KelolaModal' });
+        }, 750);
       }
   }
 };

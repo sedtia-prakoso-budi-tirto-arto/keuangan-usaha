@@ -32,10 +32,8 @@
             <td>{{ formatRupiah(calculateNettProfit(data.Omset, data.totalModal)) }}</td>
             <td>
               <div class="btn-group" role="group">
-                <router-link :to="{ name: 'EditModalHarian', params: { id: data.id } }" class="btn btn-success">
-                  <i class="fas fa-edit"></i>
-                </router-link>
-                <button @click="deleteData(index)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-success" @click="navigateToEdit(index)"><i class="fas fa-edit"></i></button>
+                <button @click="confirmDeleteData(index)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
               </div>
             </td>
           </tr>
@@ -118,7 +116,21 @@ export default {
         });
       }
     },
-
+    confirmDeleteData(index) {
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda tidak akan bisa mengembalikan data ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteData(index);
+        }
+      });
+    },
     calculateNettProfit(Omset, totalModal) {
       return Omset - totalModal - 27000
     },
@@ -140,6 +152,23 @@ export default {
     logId(id) {
       console.log("Navigating to EditModalHarian with ID:", id)
     },
+    navigateToEdit(index) {
+      const id = this.dataList[index].id;
+        Swal.fire({
+            title: 'Memuat Edit Modal Harian...',
+            text: 'Silakan tunggu',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        setTimeout(() => {
+            Swal.close();
+            // Mengarahkan ke rute KelolaModal
+            this.$router.push({ name: 'EditModalHarian', params: { id: id } });
+        }, 750);
+      },
     navigateToHome() {
         Swal.fire({
             title: 'Memuat Modal Harian...',
@@ -161,7 +190,7 @@ export default {
 </script>
 
 <style scoped>
-.back{
+.back {
   margin-top: 3%;
 }
 
