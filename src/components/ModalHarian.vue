@@ -31,7 +31,7 @@
     </div>
     
     <button @click="hitungTotalHarga">Hitung Total Modal</button>
-    <button @click="navigateToKelola" style="margin-left: 10px;">Kelola</button>
+    <button class="button-container" @click="navigateToKelola" style="margin-left: 10px;">Kelola</button>
     
     <div class="hasil" v-html="hasil"></div>
   </div>
@@ -76,6 +76,21 @@ export default {
     }
   },
   mounted() {
+    // Periksa apakah pesan selamat datang pernah ditampilkan sebelumnya
+    const welcomeMessageShown = localStorage.getItem('welcomeMessageShown');
+
+    // Jika belum pernah ditampilkan sebelumnya, tampilkan pesan selamat datang
+    if (!welcomeMessageShown) {
+      Swal.fire({
+        title: 'Selamat Datang!',
+        text: 'Terima kasih telah menggunakan aplikasi Perhitungan Modal Harian.',
+        icon: 'info',
+        confirmButtonText: 'OK'
+      });
+
+      // Tandai bahwa pesan selamat datang sudah ditampilkan
+      localStorage.setItem('welcomeMessageShown', 'true');
+    }
   },
   methods: {
     async hitungTotalHarga() {
@@ -268,6 +283,13 @@ label {
   margin-bottom: 0.5rem;
   font-weight: bold;
   color: #555;
+}
+
+/* Gaya baru untuk tombol kontainer */
+.button-container {
+  display: flex;
+  justify-content: center; /* Membuat tombol berada di tengah */
+  margin-top: 1rem; /* Spasi atas agar tidak terlalu dekat dengan hasil */
 }
 
 /* Input styling */
