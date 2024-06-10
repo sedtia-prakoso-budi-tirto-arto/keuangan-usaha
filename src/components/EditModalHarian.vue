@@ -1,50 +1,66 @@
 <template>
   <div class="container">
-    <h1>Ubah Perhitungan Modal Harian</h1>
+    <h2 class="mb-4">Ubah Perhitungan Modal Harian</h2>
 
     <!-- Tambahkan input tanggal dengan gaya -->
-  <div class="input-group">
-    <label for="tanggal">Tanggal:</label>
-    <div class="date-input">
-      <input type="date" id="tanggal" v-model="tanggal" class="date-input-field">
-      <span class="date-input-icon">
-        <!-- <i class="fas fa-calendar-alt"></i> -->
-      </span>
-    </div>
-  </div>
-
-    <div class="input-container">
+    <div class="mb-3">
+      <label for="tanggal" class="form-label">Tanggal:</label>
       <div class="input-group">
-        <label for="jumlahTelur">Jumlah Telur:</label>
-        <input type="number" id="jumlahTelur" v-model="jumlahTelur">
-      </div>
-
-      <div class="input-group">
-        <label for="jumlahPorsi">Jumlah Porsi:</label>
-        <input type="number" id="jumlahPorsi" v-model="jumlahPorsi">
-      </div>
-      
-      <div class="input-group">
-        <label for="omset">Omset:</label>
-        <input type="number" id="omset" v-model="omset">
+        <input type="date" id="tanggal" v-model="tanggal" class="form-control">
+        <span class="input-group-text">
+          <i class="fas fa-calendar-alt"></i>
+        </span>
       </div>
     </div>
 
-    <div class="menu-container">
-      <div class="menu-group" v-for="(value, menu) in pancong" :key="menu">
-        <label :for="menu">{{ menu }}:</label>
-        <input type="number" :id="menu" v-model="pancong[menu]">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="jumlahTelur" class="form-label">Jumlah Telur:</label>
+          <input type="number" id="jumlahTelur" v-model="jumlahTelur" class="form-control">
+        </div>
       </div>
-      <div class="menu-group" v-for="(value, menu) in topping" :key="menu">
-        <label :for="menu">{{ menu }}:</label>
-        <input type="number" :id="menu" v-model="topping[menu]">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="jumlahPorsi" class="form-label">Jumlah Porsi:</label>
+          <input type="number" id="jumlahPorsi" v-model="jumlahPorsi" class="form-control">
+        </div>
       </div>
     </div>
-    
-    <button @click="hitungTotalHarga">Update Total Modal</button>
-    <button @click="navigateToKelola" style="margin-left: 10px;">Kelola</button>
-    
-    <div class="hasil" v-html="hasil"></div>
+
+    <div class="mb-3">
+      <label for="omset" class="form-label">Omset:</label>
+      <input type="number" id="omset" v-model="omset" class="form-control">
+    </div>
+
+    <div class="mb-4">
+      <h2>Menu Pancong</h2>
+      <div class="row">
+        <div class="col-md-6" v-for="(value, menu) in pancong" :key="menu">
+          <div class="mb-3">
+            <label :for="menu" class="form-label">{{ menu }}:</label>
+            <input type="number" :id="menu" v-model="pancong[menu]" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <h2>Topping</h2>
+      <div class="row">
+        <div class="col-md-6" v-for="(value, menu) in topping" :key="menu">
+          <div class="mb-3">
+            <label :for="menu" class="form-label">{{ menu }}:</label>
+            <input type="number" :id="menu" v-model="topping[menu]" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button @click="hitungTotalHarga" class="btn btn-primary">Hitung Total Modal</button>
+    <button class="btn btn-secondary" @click="navigateToKelola">Kelola</button>
+
+    <div class="hasil mt-4" v-html="hasil"></div>
   </div>
 </template>
 

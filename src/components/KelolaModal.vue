@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <button class="back-btn" @click="navigateToHome">Home</button>
-    <div class="total-profit">
-      Total Nett Profit: <span class="highlight">{{ formatRupiah(totalNettProfit) }}</span>
+    <button @click="navigateToHome" class="back btn btn-primary mb-4">Home</button>
+    <div class="total-profit mb-4">
+      <h5><strong>Total Nett Profit: <span class="text-success">{{ formatRupiah(totalNettProfit) }}</span></strong></h5>
     </div>
-    <div class="total-sewa">
-      Total Sewa: <span class="highlight">{{ formatRupiah(totalSewa) }}</span>
+    <div class="total-sewa mb-4">
+      <h5><strong>Total Sewa: <span class="text-success">{{ formatRupiah(totalSewa) }}</span></strong></h5>
     </div>
-    <div class="table-container">
-      <table>
+    <div class="table-responsive">
+      <table class="table">
         <thead>
           <tr>
             <th>Waktu Input</th>
@@ -31,11 +31,11 @@
             <td>{{ formatRupiah(data.Omset) }}</td>
             <td>{{ formatRupiah(calculateNettProfit(data.Omset, data.totalModal)) }}</td>
             <td>
-              <div class="action-buttons">
-                <router-link :to="{ name: 'EditModalHarian', params: { id: data.id } }" class="action-btn edit-btn">
+              <div class="btn-group" role="group">
+                <router-link :to="{ name: 'EditModalHarian', params: { id: data.id } }" class="btn btn-success">
                   <i class="fas fa-edit"></i>
                 </router-link>
-                <button @click="deleteData(index)" class="action-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                <button @click="deleteData(index)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
               </div>
             </td>
           </tr>
@@ -95,29 +95,29 @@ export default {
       }
     },
     async deleteData(index) {
-    try {
-      const idToDelete = this.dataList[index].id;
-      await deleteDoc(doc(db, 'history', idToDelete));
-      this.dataList.splice(index, 1);
-      console.log('Data ID ' + idToDelete + ' berhasil dihapus');
+      try {
+        const idToDelete = this.dataList[index].id;
+        await deleteDoc(doc(db, 'history', idToDelete));
+        this.dataList.splice(index, 1);
+        console.log('Data ID ' + idToDelete + ' berhasil dihapus');
 
-      // Tampilkan pesan sukses dengan SweetAlert
-      Swal.fire({
-        icon: 'success',
-        title: 'Data berhasil dihapus',
-        text: 'Data ID ' + idToDelete + ' berhasil dihapus'
-      });
-    } catch (error) {
-      console.error('Error deleting document: ', error);
+        // Tampilkan pesan sukses dengan SweetAlert
+        Swal.fire({
+          icon: 'success',
+          title: 'Data berhasil dihapus',
+          text: 'Data ID ' + idToDelete + ' berhasil dihapus'
+        });
+      } catch (error) {
+        console.error('Error deleting document: ', error);
 
-      // Tampilkan pesan kesalahan dengan SweetAlert
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'
-      });
-    }
-  },
+        // Tampilkan pesan kesalahan dengan SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'
+        });
+      }
+    },
 
     calculateNettProfit(Omset, totalModal) {
       return Omset - totalModal - 27000
@@ -148,142 +148,12 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-  padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  color: #333;
+.back{
+  margin-top: 3%;
 }
 
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: left;
-}
-
-th {
-  background-color: #f8f9fa;
-}
-
-.table-row:hover {
-  background-color: #e9ecef;
-}
-
-.action-btn {
-  padding: 6px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  background-color: #007bff;
-  color: white;
-}
-
-.edit-btn {
-  background-color: #28a745;
-}
-
-.delete-btn {
-  margin-left: 5px;
-  background-color: #dc3545;
-}
-
-.action-btn:hover {
-  opacity: 0.8;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-}
-
-.total-profit {
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.total-profit .highlight {
-  color: #28a745; /* Warna hijau */
-}
-
-.total-sewa {
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.total-profit .highlight,
-.total-sewa .highlight {
-  color: #28a745; /* Warna hijau */
-}
-
-.back-btn {
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.back-btn:hover {
-  background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  table, th, td {
-    font-size: 0.9rem;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .back-btn {
-    width: 100%;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  th, td {
-    padding: 8px;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .action-btn {
-    margin: 2px 0;
-  }
-
-  .back-btn {
-    width: 100%;
-    padding: 10px;
-  }
+.total-profit .text-success,
+.total-sewa .text-success {
+  color: #28a745;
 }
 </style>
