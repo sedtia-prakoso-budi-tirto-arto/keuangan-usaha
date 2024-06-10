@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="mb-4">Perhitungan Modal Harian</h2>
+    <h1 class="mb-4">Perhitungan Modal Harian</h1>
 
     <!-- Tambahkan input tanggal dengan gaya -->
     <div class="mb-3">
@@ -14,13 +14,13 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 col-12">
         <div class="mb-3">
           <label for="jumlahTelur" class="form-label">Jumlah Telur:</label>
           <input type="number" id="jumlahTelur" v-model="jumlahTelur" class="form-control">
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 col-12">
         <div class="mb-3">
           <label for="jumlahPorsi" class="form-label">Jumlah Porsi:</label>
           <input type="number" id="jumlahPorsi" v-model="jumlahPorsi" class="form-control">
@@ -36,7 +36,7 @@
     <div class="mb-4">
       <h2>Menu Pancong</h2>
       <div class="row">
-        <div class="col-md-6" v-for="(value, menu) in pancong" :key="menu">
+        <div class="col-md-6 col-12" v-for="(value, menu) in pancong" :key="menu">
           <div class="mb-3">
             <label :for="menu" class="form-label">{{ menu }}:</label>
             <input type="number" :id="menu" v-model="pancong[menu]" class="form-control">
@@ -48,7 +48,7 @@
     <div class="mb-4">
       <h2>Topping</h2>
       <div class="row">
-        <div class="col-md-6" v-for="(value, menu) in topping" :key="menu">
+        <div class="col-md-6 col-12" v-for="(value, menu) in topping" :key="menu">
           <div class="mb-3">
             <label :for="menu" class="form-label">{{ menu }}:</label>
             <input type="number" :id="menu" v-model="topping[menu]" class="form-control">
@@ -63,6 +63,7 @@
     <div class="hasil mt-4" v-html="hasil"></div>
   </div>
 </template>
+
 
 
 <script>
