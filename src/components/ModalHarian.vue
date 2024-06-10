@@ -40,6 +40,7 @@
 <script>
 import { db } from '../../firebase'
 import { collection, addDoc, getDocs } from 'firebase/firestore'
+import Swal from 'sweetalert2'
 
 export default {
   data() {
@@ -77,136 +78,155 @@ export default {
   mounted() {
   },
   methods: {
-  async hitungTotalHarga() {
-  // Validasi input
-  if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
-    this.hasil = "Jumlah telur harus angka positif.";
-    return;
-  }
-  if (isNaN(this.jumlahPorsi) || this.jumlahPorsi <= 0) {
-    this.hasil = "Jumlah porsi harus angka positif.";
-    return;
-  }
-
-  // Fungsi untuk mendapatkan harga bahan tertentu dari data dokumen
-  const getHargaBahan = (data, bahan) => {
-    return data[bahan] || null; // Mengembalikan harga bahan atau null jika bahan tidak ada
-  };
-
-  try {
-    // Mendapatkan snapshot dokumen dari koleksi "modal"
-    const querySnapshot = await getDocs(collection(db, "modal"));
-
-    // Inisialisasi total harga
-    let totalGlaze = 0;
-    let totalTopping = 0;
-    let totalAlat = 0;
-    let totalHarga = 0;
-    let hasilPerhitungan = '';
-
-    // Iterasi setiap dokumen dalam snapshot
-    querySnapshot.forEach((doc) => {
-      // Mendapatkan data dokumen
-      const data = doc.data();
-
-      // Mendapatkan harga telur
-      const hargaTelur = getHargaBahan(data, "telur");
-
-      if (hargaTelur !== null) {
-        // Iterasi setiap bahan dalam data dokumen
-        for (const [bahan, harga] of Object.entries(data)) {
-          if (harga && !isNaN(harga)) {
-            // Menghitung total harga setiap bahan dikali jumlah telur
-            const totalHargaBahan = harga * this.jumlahTelur;
-            hasilPerhitungan += `${bahan}: ${harga} * ${this.jumlahTelur} = ${totalHargaBahan}<br>`;
-            // Menambahkan ke total harga
-            totalHarga += totalHargaBahan;
-          }
-        }
+    async hitungTotalHarga() {
+      // Validasi input
+      if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
+        this.hasil = "Jumlah telur harus angka positif.";
+        return;
+      }
+      if (isNaN(this.jumlahPorsi) || this.jumlahPorsi <= 0) {
+        this.hasil = "Jumlah porsi harus angka positif.";
+        return;
       }
 
-      const alat =["foam", "sendok"];
-      const glaze = ["Tiramisu", "Cappucino", "Coklat", "Chococrunchy", "Meses Susu", "Keju Susu", "Strawberry", "Greentea", "Cheese", "Redvelvet", "Taro", "Milky"];
-      const topping = ["Meses", "Oreo", "Kacang", "Red Crumble", "Matcha Crumble", "Chocochips", "Keju"];
+      // Fungsi untuk mendapatkan harga bahan tertentu dari data dokumen
+      const getHargaBahan = (data, bahan) => {
+        return data[bahan] || null; // Mengembalikan harga bahan atau null jika bahan tidak ada
+      };
 
-      glaze.forEach(nama => {
-        const harga = getHargaBahan(data, nama);
-        const jumlah = this.pancong[nama] || 0;
-        
-        if (harga !== null && jumlah > 0) {
-          const Glaze = harga * jumlah;
-          hasilPerhitungan += `${nama}: ${harga} * ${jumlah} = ${Glaze}<br>`;
-          totalGlaze += Glaze;
-        }
-      });
+      try {
+        // Mendapatkan snapshot dokumen dari koleksi "modal"
+        const querySnapshot = await getDocs(collection(db, "modal"));
 
-      topping.forEach(nama => {
-        const harga = getHargaBahan(data, nama);
-        const jumlah = this.topping[nama] || 0;
-        
-        if (harga !== null && jumlah > 0) {
-          const Topping = harga * jumlah;
-          hasilPerhitungan += `${nama}: ${harga} * ${jumlah} = ${Topping}<br>`;
-          totalTopping += Topping;
-        }
-      });
+        // Inisialisasi total harga
+        let totalGlaze = 0;
+        let totalTopping = 0;
+        let totalAlat = 0;
+        let totalHarga = 0;
+        let hasilPerhitungan = '';
 
-      alat.forEach(nama => {
-        const harga = getHargaBahan(data, nama);       
-        if (harga !== null && this.jumlahPorsi > 0) {
-          const Alat = harga * this.jumlahPorsi;
-          hasilPerhitungan += `${nama}: ${harga} * ${this.jumlahPorsi} = ${Alat}<br>`;
-          totalAlat += Alat;
-        }
-      });
-    });
+        // Iterasi setiap dokumen dalam snapshot
+        querySnapshot.forEach((doc) => {
+          // Mendapatkan data dokumen
+          const data = doc.data();
 
-    totalHarga = totalHarga + totalGlaze + totalAlat + totalTopping;
+          // Mendapatkan harga telur
+          const hargaTelur = getHargaBahan(data, "telur");
 
-    // Menampilkan hasil total harga
-    hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;
-    this.hasil = hasilPerhitungan;
+          if (hargaTelur !== null) {
+            // Iterasi setiap bahan dalam data dokumen
+            for (const [bahan, harga] of Object.entries(data)) {
+              if (harga && !isNaN(harga)) {
+                // Menghitung total harga setiap bahan dikali jumlah telur
+                const totalHargaBahan = harga * this.jumlahTelur;
+                hasilPerhitungan += `${bahan}: ${harga} * ${this.jumlahTelur} = ${totalHargaBahan}<br>`;
+                // Menambahkan ke total harga
+                totalHarga += totalHargaBahan;
+              }
+            }
+          }
 
-    // Mendapatkan tanggal dan waktu saat ini
-    const now = new Date();
+          const alat =["foam", "sendok"];
+          const glaze = ["Tiramisu", "Cappucino", "Coklat", "Chococrunchy", "Meses Susu", "Keju Susu", "Strawberry", "Greentea", "Cheese", "Redvelvet", "Taro", "Milky"];
+          const topping = ["Meses", "Oreo", "Kacang", "Red Crumble", "Matcha Crumble", "Chocochips", "Keju"];
 
-    // Mendapatkan bagian-bagian waktu
-    const hours = now.getHours().toString().padStart(2, '0'); // Jam dalam format 2 digit (00-23)
-    const minutes = now.getMinutes().toString().padStart(2, '0'); // Menit dalam format 2 digit (00-59)
-    const seconds = now.getSeconds().toString().padStart(2, '0'); // Detik dalam format 2 digit (00-59)
-    const day = now.getDate().toString().padStart(2, '0'); // Hari dalam format 2 digit (01-31)
-    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Bulan dalam format 2 digit (01-12), perlu ditambah 1 karena Januari dimulai dari 0
-    const year = now.getFullYear(); // Tahun dalam format 4 digit (misalnya: 2024)
+          glaze.forEach(nama => {
+            const harga = getHargaBahan(data, nama);
+            const jumlah = this.pancong[nama] || 0;
 
-    // Format waktu sesuai dengan format yang diinginkan
-    const formattedTime = `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+            if (harga !== null && jumlah > 0) {
+              const Glaze = harga * jumlah;
+              hasilPerhitungan += `${nama}: ${harga} * ${jumlah} = ${Glaze}<br>`;
+              totalGlaze += Glaze;
+            }
+          });
 
-    console.log(formattedTime);
+          topping.forEach(nama => {
+            const harga = getHargaBahan(data, nama);
+            const jumlah = this.topping[nama] || 0;
 
-    // Simpan hasil perhitungan ke Firestore
-      const docRef = await addDoc(collection(db, "history"), {
-      date: formattedTime,
-      modalInfo: this.hasil,
-      jumlahTelur: this.jumlahTelur,
-      jumlahPorsi: this.jumlahPorsi,
-      totalModal: totalHarga,
-      Omset: this.omset
-      });
-      
-      // Log ID dokumen baru yang dibuat
-      console.log("Document written with ID: ", docRef.id);
+            if (harga !== null && jumlah > 0) {
+              const Topping = harga * jumlah;
+              hasilPerhitungan += `${nama}: ${harga} * ${jumlah} = ${Topping}<br>`;
+              totalTopping += Topping;
+            }
+          });
+
+          alat.forEach(nama => {
+            const harga = getHargaBahan(data, nama);
+            if (harga !== null && this.jumlahPorsi > 0) {
+              const Alat = harga * this.jumlahPorsi;
+              hasilPerhitungan += `${nama}: ${harga} * ${this.jumlahPorsi} = ${Alat}<br>`;
+              totalAlat += Alat;
+            }
+          });
+        });
+
+        totalHarga = totalHarga + totalGlaze + totalAlat + totalTopping;
+
+        // Menampilkan hasil total harga
+        hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;
+        this.hasil = hasilPerhitungan;
+
+        // Menampilkan SweetAlert berhasil
+        this.showSuccessPopup();
+
+        // Mendapatkan tanggal dan waktu saat ini
+        const now = new Date();
+
+        // Mendapatkan bagian-bagian waktu
+        const hours = now.getHours().toString().padStart(2, '0'); // Jam dalam format 2 digit (00-23)
+        const minutes = now.getMinutes().toString().padStart(2, '0'); // Menit dalam format 2 digit (00-59)
+        const seconds = now.getSeconds().toString().padStart(2, '0'); // Detik dalam format 2 digit (00-59)
+        const day = now.getDate().toString().padStart(2, '0'); // Hari dalam format 2 digit (01-31)
+        const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Bulan dalam format 2 digit (01-12), perlu ditambah 1 karena Januari dimulai dari 0
+        const year = now.getFullYear(); // Tahun dalam format 4 digit (misalnya: 2024)
+
+        // Format waktu sesuai dengan format yang diinginkan
+        const formattedTime = `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+
+        // Menampilkan hasil total harga
+        hasilPerhitungan += `Total Modal: ${totalHarga} <br>Porsi Terjual: ${this.jumlahPorsi}`;
+        this.hasil = hasilPerhitungan;
+
+        // Menampilkan SweetAlert berhasil
+        this.showSuccessPopup();
+
+        // Simpan hasil perhitungan ke Firestore
+        const docRef = await addDoc(collection(db, "history"), {
+          date: formattedTime,
+          modalInfo: this.hasil,
+          jumlahTelur: this.jumlahTelur,
+          jumlahPorsi: this.jumlahPorsi,
+          totalModal: totalHarga,
+          Omset: this.omset
+        });
+
+        // Log ID dokumen baru yang dibuat
+        console.log("Document written with ID: ", docRef.id);
       } catch (error) {
         console.error("Error getting documents: ", error);
         this.hasil = "Terjadi kesalahan saat mengambil data.";
-        }
+      }
+    },
+    showSuccessPopup() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Perhitungan modal berhasil!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     navigateToKelola() {
-                // Mengarahkan ke rute KelolaModal
+      // Mengarahkan ke rute KelolaModal
       this.$router.push({ name: 'KelolaModal' });
-      }
     }
+  }
 }
 </script>
+
+
+
 
 <style scoped>
 /* Container styling */

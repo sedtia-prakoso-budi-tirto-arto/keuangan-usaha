@@ -40,6 +40,7 @@
 <script>
 import { db } from '../../firebase';
 import { doc, collection, updateDoc, getDoc, getDocs } from "firebase/firestore";
+import Swal from 'sweetalert2'
 
 export default {
   data() {
@@ -203,7 +204,10 @@ export default {
     // Format waktu sesuai dengan format yang diinginkan
     const formattedTime = `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
 
-   const documentId = this.$route.params.id;
+    const documentId = this.$route.params.id;
+
+    // Menampilkan SweetAlert berhasil
+    this.showSuccessPopup();
 
     await updateDoc(doc(db, "history", documentId), {
       date: formattedTime,
@@ -217,6 +221,14 @@ export default {
         console.error("Error getting documents: ", error);
         this.hasil = "Terjadi kesalahan saat mengambil data.";
       }
+    },
+    showSuccessPopup() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Update modal berhasil!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     navigateToKelola() {
         // Mengarahkan ke rute KelolaModal

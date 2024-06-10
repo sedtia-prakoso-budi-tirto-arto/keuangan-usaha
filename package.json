@@ -12,6 +12,7 @@
     "firebase": "^10.12.2",
     "git": "^0.1.5",
     "register-service-worker": "^1.7.2",
+    "sweetalert2": "^11.11.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"
   },
