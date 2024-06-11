@@ -8,7 +8,13 @@
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" v-model="password" required class="form-control">
+        <div class="password-container">
+          <input :type="passwordFieldType" v-model="password" required class="form-control">
+          <button type="button" class="toggle-password" @click="togglePasswordVisibility">
+            <span v-if="isPasswordVisible">Hide</span>
+            <span v-else>Show</span>
+          </button>
+        </div>
       </div>
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
@@ -23,8 +29,14 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      isPasswordVisible: false
     };
+  },
+  computed: {
+    passwordFieldType() {
+      return this.isPasswordVisible ? 'text' : 'password';
+    }
   },
   mounted() {
     // Periksa apakah pesan selamat datang pernah ditampilkan pada sesi ini
@@ -44,6 +56,9 @@ export default {
     }
   },
   methods: {
+    togglePasswordVisibility() {
+      this.isPasswordVisible = !this.isPasswordVisible;
+    },
     async login() {
       const auth = getAuth();
       try {
@@ -56,7 +71,7 @@ export default {
         
         // Tambahkan jeda delay sebelum mengarahkan ke halaman ModalHarian
         setTimeout(() => {
-          this.$router.push({ name: "ModalHarian" });
+          this.$router.push({ name: "Beranda" });
         }, 1500); // 1500ms = 1.5 detik
       } catch (error) {
         Swal.fire({
@@ -97,6 +112,24 @@ h2 {
   font-size: 1rem;
 }
 
+.password-container {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+  color: #007bff;
+}
+
+.toggle-password:hover {
+  color: #0056b3;
+}
+
 .btn {
   width: 100%;
   padding: 0.75rem;
@@ -115,7 +148,7 @@ h2 {
 /* Responsiveness */
 @media (max-width: 576px) {
   .login-container {
-    margin: 50px auto;
+    margin: 50px 20px;
     padding: 1rem;
     border-radius: 5px;
   }

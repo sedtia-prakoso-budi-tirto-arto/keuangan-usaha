@@ -1,7 +1,8 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth'
 import LoginPage from '../components/LoginPage.vue'
+import MainMenu from '../components/MainMenu.vue'
 import ModalHarian from '../components/ModalHarian.vue'
 import KelolaModal from '../components/KelolaModal.vue'
 import EditModalHarian from '../components/EditModalHarian.vue'
@@ -11,6 +12,14 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginPage
+  },
+  {
+    path: '/beranda',
+    name: 'Beranda',
+    component: MainMenu,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/modal-harian',
