@@ -1,51 +1,52 @@
 <template>
     <div class="main-menu">
-      <h1>Selamat Datang di Aplikasi Manajemen Modal</h1>
-      <div class="menu-buttons">
-        <button @click="navigateToModalHarian" class="btn btn-primary">Modal Harian</button>
-        <button @click="navigateToKelola" class="btn btn-secondary">Kelola</button>
+      <div class="content-wrapper">
+        <h1>Selamat Datang di Aplikasi Manajemen Modal</h1>
+        <p class="intro-text">Kelola modal harian dan bulanan Anda dengan mudah dan efisien.</p>
+        <div class="menu-buttons">
+          <button @click="navigateToModalHarian" class="btn btn-primary">Modal Harian</button>
+          <button @click="navigateToKelola" class="btn btn-secondary">Kelola</button>
+        </div>
       </div>
     </div>
   </template>
   
   <script>
   import Swal from 'sweetalert2'
+  
   export default {
     methods: {
-        navigateToKelola() {
+      navigateToKelola() {
         Swal.fire({
-            title: 'Memuat Kelola...',
-            text: 'Silakan tunggu',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+          title: 'Memuat Kelola...',
+          text: 'Silakan tunggu',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
         });
-
+  
         setTimeout(() => {
-            Swal.close();
-            // Mengarahkan ke rute KelolaModal
-            this.$router.push({ name: 'KelolaModal' });
+          Swal.close();
+          this.$router.push({ name: 'KelolaModal' });
         }, 750);
       },
       navigateToModalHarian() {
         Swal.fire({
-            title: 'Memuat Modal Harian...',
-            text: 'Silakan tunggu',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+          title: 'Memuat Modal Harian...',
+          text: 'Silakan tunggu',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
         });
-
+  
         setTimeout(() => {
-            Swal.close();
-            // Mengarahkan ke rute KelolaModal
-            this.$router.push({ name: 'ModalHarian' });
+          Swal.close();
+          this.$router.push({ name: 'ModalHarian' });
         }, 750);
       }
-    },
-    
+    }
   };
   </script>
   
@@ -59,10 +60,23 @@
     text-align: center;
     background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
     color: white;
+    padding: 2rem;
+  }
+  
+  .content-wrapper {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
   
   h1 {
     font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .intro-text {
+    font-size: 1.2rem;
     margin-bottom: 2rem;
   }
   
@@ -79,7 +93,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
   }
   
   .btn-primary {
@@ -89,6 +103,7 @@
   
   .btn-primary:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
   }
   
   .btn-secondary {
@@ -98,6 +113,7 @@
   
   .btn-secondary:hover {
     background-color: #5a6268;
+    transform: scale(1.05);
   }
   
   /* Responsive design */
