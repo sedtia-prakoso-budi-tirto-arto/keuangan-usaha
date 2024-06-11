@@ -171,7 +171,7 @@ export default {
       },
     navigateToHome() {
         Swal.fire({
-            title: 'Memuat Modal Harian...',
+            title: 'Memuat Home...',
             text: 'Silakan tunggu',
             allowOutsideClick: false,
             didOpen: () => {
@@ -182,7 +182,7 @@ export default {
         setTimeout(() => {
             Swal.close();
             // Mengarahkan ke rute KelolaModal
-            this.$router.push({ name: 'ModalHarian' });
+            this.$router.push({ name: 'Beranda' });
         }, 750);
       }
   }

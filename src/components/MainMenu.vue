@@ -2,19 +2,50 @@
     <div class="main-menu">
       <h1>Selamat Datang di Aplikasi Manajemen Modal</h1>
       <div class="menu-buttons">
-        <button @click="navigateTo('ModalHarian')" class="btn btn-primary">Modal Harian</button>
-        <button @click="navigateTo('KelolaModal')" class="btn btn-secondary">Kelola</button>
+        <button @click="navigateToModalHarian" class="btn btn-primary">Modal Harian</button>
+        <button @click="navigateToKelola" class="btn btn-secondary">Kelola</button>
       </div>
     </div>
   </template>
   
   <script>
+  import Swal from 'sweetalert2'
   export default {
     methods: {
-      navigateTo(routeName) {
-        this.$router.push({ name: routeName });
+        navigateToKelola() {
+        Swal.fire({
+            title: 'Memuat Kelola...',
+            text: 'Silakan tunggu',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        setTimeout(() => {
+            Swal.close();
+            // Mengarahkan ke rute KelolaModal
+            this.$router.push({ name: 'KelolaModal' });
+        }, 750);
+      },
+      navigateToModalHarian() {
+        Swal.fire({
+            title: 'Memuat Modal Harian...',
+            text: 'Silakan tunggu',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        setTimeout(() => {
+            Swal.close();
+            // Mengarahkan ke rute KelolaModal
+            this.$router.push({ name: 'ModalHarian' });
+        }, 750);
       }
-    }
+    },
+    
   };
   </script>
   
