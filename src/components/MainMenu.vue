@@ -6,6 +6,7 @@
         <div class="menu-buttons">
           <button @click="navigateToModalHarian" class="btn btn-primary">Modal Harian</button>
           <button @click="navigateToKelola" class="btn btn-secondary">Kelola</button>
+          <button @click="navigateToKebutuhanHarian" class="btn btn-secondary">Kebutuhan Harian</button>
         </div>
       </div>
     </div>
@@ -44,6 +45,21 @@
         setTimeout(() => {
           Swal.close();
           this.$router.push({ name: 'ModalHarian' });
+        }, 750);
+      },
+      navigateToKebutuhanHarian() {
+        Swal.fire({
+          title: 'Memuat Kebutuhan Harian...',
+          text: 'Silakan tunggu',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+  
+        setTimeout(() => {
+          Swal.close();
+          this.$router.push({ name: 'KebutuhanHarian' });
         }, 750);
       }
     }
