@@ -8,6 +8,7 @@ import KelolaModal from '../components/KelolaModal.vue'
 import EditModalHarian from '../components/EditModalHarian.vue'
 import KebutuhanHarian from '../components/KebutuhanHarian.vue'
 import KelolaKebutuhanHarian from '../components/KelolaKebutuhanHarian.vue'
+import EditKebutuhanHarian from '../components/EditKebutuhanHarian.vue'
 
 const routes = [
   {
@@ -59,6 +60,14 @@ const routes = [
     path: '/kelola-kebutuhan-harian',
     name: 'KelolaKebutuhanHarian',
     component: KelolaKebutuhanHarian,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/kebutuhan-harian/:id',
+    name: 'EditKebutuhanHarian',
+    component: EditKebutuhanHarian,
     meta: {
       requiresAuth: true
     }

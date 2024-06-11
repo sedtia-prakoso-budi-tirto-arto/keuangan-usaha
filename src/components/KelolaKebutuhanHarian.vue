@@ -136,7 +136,7 @@
         let html = '<ul>'
         items.forEach(item => {
           const parts = item.split(':')
-          if (parts.length === 2 && parts[1].trim() !== 'undefined' && !['Saldo, Total Saldo', 'Total Pemasukan', 'Total Kebutuhan'].includes(parts[0].trim())) {
+          if (parts.length === 2 && parts[1].trim() !== 'undefined' && !['Saldo', 'Total Saldo', 'Total Pemasukan', 'Total Kebutuhan'].includes(parts[0].trim())) {
             html += `<li>${parts[0].trim()}: ${parts[1].trim()}</li>`
           }
         })
