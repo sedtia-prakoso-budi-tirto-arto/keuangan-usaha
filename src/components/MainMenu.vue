@@ -4,9 +4,10 @@
         <h1>Selamat Datang di Aplikasi Manajemen Modal</h1>
         <p class="intro-text">Kelola modal harian dan bulanan Anda dengan mudah dan efisien.</p>
         <div class="menu-buttons">
-          <button @click="navigateToModalHarian" class="btn btn-primary">Modal Harian</button>
-          <button @click="navigateToKelola" class="btn btn-secondary">Kelola</button>
-          <button @click="navigateToKebutuhanHarian" class="btn btn-secondary">Kebutuhan Harian</button>
+          <button @click="navigateToModalHarian" class="btn btn-primary"><i class="fas fa-coins"></i> Modal Harian</button>
+          <button @click="navigateToKelola" class="btn btn-primary"><i class="fas fa-chart-line"></i> Kelola Modal</button>
+          <button @click="navigateToKebutuhanHarian" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Kebutuhan Harian</button>
+          <button @click="navigateToKelolaKebutuhanHarian" class="btn btn-primary"><i class="fas fa-tasks"></i> Kelola Kebutuhan Harian</button>
         </div>
       </div>
     </div>
@@ -90,13 +91,12 @@
     height: 100vh;
     text-align: center;
     background: white;
-    color: rgba(255, 255, 255, 0.1);
+    color: #3f454a;
     padding: 2rem;
   }
   
   .content-wrapper {
-    color: #3f454a;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.9);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -107,6 +107,10 @@
     margin-bottom: 1rem;
   }
   
+  .fas{
+    margin-right: 0.5rem;
+  }
+
   .intro-text {
     font-size: 1.2rem;
     margin-bottom: 2rem;
@@ -126,6 +130,10 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
   
   .btn-primary {
@@ -136,28 +144,6 @@
   .btn-primary:hover {
     background-color: #0056b3;
     transform: scale(1.05);
-  }
-  
-  .btn-secondary {
-    background-color: #6c757d;
-    color: white;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #5a6268;
-    transform: scale(1.05);
-  }
-  
-  /* Responsive design */
-  @media (max-width: 576px) {
-    h1 {
-      font-size: 2rem;
-    }
-  
-    .btn {
-      width: 80%;
-      font-size: 1rem;
-    }
   }
   </style>
   
