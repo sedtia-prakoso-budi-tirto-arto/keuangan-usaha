@@ -44,7 +44,8 @@
   
   <script>
   import { db } from '../../firebase'
-  import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
+  import { collection, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore'
+  import { getAuth } from 'firebase/auth'
   import Swal from 'sweetalert2'
   
   export default {
@@ -54,34 +55,41 @@
       }
     },
     computed: {
-    totalSaldoSaatIni() {
+      totalSaldoSaatIni() {
         return this.dataList.reduce((total, data) => {
-        // Periksa apakah properti saldo adalah angka numerik yang valid
-        if (!isNaN(data.saldo) && typeof data.saldo === 'number') {
+          // Periksa apakah properti saldo adalah angka numerik yang valid
+          if (!isNaN(data.saldo) && typeof data.saldo === 'number') {
             return total + data.saldo;
-        } else {
+          } else {
             return total; // Jika properti saldo tidak valid, abaikan
-        }
+          }
         }, 0);
-    }
+      }
     },
-
     created() {
       this.fetchData()
     },
     methods: {
       async fetchData() {
         try {
-          const querySnapshot = await getDocs(collection(db, 'historyNeeds'))
-          let dataList = []
+          // Dapatkan ID pengguna terautentikasi
+          const auth = getAuth();
+          const user = auth.currentUser;
+          const userId = user.uid;
+  
+          // Query Firestore untuk mendapatkan data yang sesuai dengan ID pengguna
+          const q = query(collection(db, 'historyNeeds'), where('userId', '==', userId));
+          const querySnapshot = await getDocs(q);
+          
+          let dataList = [];
           querySnapshot.forEach(doc => {
-            const id = doc.id
-            dataList.push({ id, ...doc.data() })
-          })
+            const id = doc.id;
+            dataList.push({ id, ...doc.data() });
+          });
           
-          dataList.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal))
+          dataList.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
           
-          this.dataList = dataList
+          this.dataList = dataList;
         } catch (error) {
           console.error('Error fetching documents: ', error)
         }

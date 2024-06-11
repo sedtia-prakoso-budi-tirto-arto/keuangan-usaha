@@ -9,30 +9,38 @@
           <button @click="navigateToKebutuhanHarian" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Kebutuhan Harian</button>
           <button @click="navigateToKelolaKebutuhanHarian" class="btn btn-primary"><i class="fas fa-tasks"></i> Kelola Kebutuhan Harian</button>
         </div>
+        <div v-if="isLoggedIn">
+          <p>Sedang login sebagai: <br> {{ currentUser.email }}</p>
+          <button @click="logout" class="btn btn-primary">Logout</button>
+        </div>
       </div>
     </div>
   </template>
   
   <script>
   import Swal from 'sweetalert2'
+  import { getAuth, signOut } from 'firebase/auth'
   
   export default {
+    data() {
+      return {
+        isLoggedIn: false,
+        currentUser: null
+      }
+    },
+    mounted() {
+      const auth = getAuth()
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          this.isLoggedIn = true
+          this.currentUser = user
+        } else {
+          this.isLoggedIn = false
+          this.currentUser = null
+        }
+      })
+    },
     methods: {
-      navigateToKelola() {
-        Swal.fire({
-          title: 'Memuat Kelola...',
-          text: 'Silakan tunggu',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-  
-        setTimeout(() => {
-          Swal.close();
-          this.$router.push({ name: 'KelolaModal' });
-        }, 750);
-      },
       navigateToModalHarian() {
         Swal.fire({
           title: 'Memuat Modal Harian...',
@@ -46,6 +54,21 @@
         setTimeout(() => {
           Swal.close();
           this.$router.push({ name: 'ModalHarian' });
+        }, 750);
+      },
+      navigateToKelola() {
+        Swal.fire({
+          title: 'Memuat Kelola...',
+          text: 'Silakan tunggu',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+  
+        setTimeout(() => {
+          Swal.close();
+          this.$router.push({ name: 'KelolaModal' });
         }, 750);
       },
       navigateToKebutuhanHarian() {
@@ -77,13 +100,26 @@
           Swal.close();
           this.$router.push({ name: 'KelolaKebutuhanHarian' });
         }, 750);
+      },
+      logout() {
+        const auth = getAuth()
+        signOut(auth).then(() => {
+          // Reset status login dan informasi pengguna
+          this.isLoggedIn = false
+          this.currentUser = null
+          localStorage.removeItem('isLoggedIn') // Hapus status login dari localStorage
+          this.$router.push({ name: 'Login' }) // Arahkan ke halaman login setelah logout
+        }).catch(error => {
+          console.error("Logout failed:", error)
+        })
       }
     }
-  };
+  }
   </script>
   
   <style scoped>
   .main-menu {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -164,6 +200,8 @@
     .btn {
       padding: 0.8rem 1.5rem;
       font-size: 1rem;
+      height: 4rem;
+      margin-top: -0.2rem;
     }
   }
   
@@ -178,7 +216,7 @@
   
     .intro-text {
       font-size: 0.9rem;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
   
     .btn {

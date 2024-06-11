@@ -52,8 +52,9 @@
   
   
   <script>
+  import { getFirestore, query, where, getDocs, collection, addDoc } from 'firebase/firestore'
+  import { getAuth } from 'firebase/auth'
   import { db } from '../../firebase'
-  import { collection, addDoc } from 'firebase/firestore'
   import Swal from 'sweetalert2'
   
   export default {
@@ -79,6 +80,18 @@
         }
       }
     },
+    async created() {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+        const db = getFirestore();
+        const q = query(collection(db, 'historyNeeds'), where('userId', '==', user.uid));
+        const querySnapshot = await getDocs(q);
+        
+        this.items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+    },
     methods: {
       async hitungTotalKebutuhan() {
         // Validasi input
@@ -97,6 +110,11 @@
         let totalPemasukan = this.gaji + this.lainnya;
         let totalKebutuhan = 0;
         let hasilPerhitungan = '';
+
+        // Dapatkan ID pengguna terautentikasi
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const userId = user.uid;
   
           // Iterasi setiap kebutuhan
           for (const [kebutuhan, jumlah] of Object.entries(this.kebutuhanList)) {
@@ -149,7 +167,8 @@
           totalPemasukan: totalPemasukan,
           totalKebutuhan: totalKebutuhan,
           saldo: saldo,
-          tanggal: this.tanggal
+          tanggal: this.tanggal,
+          userId: userId // Tambahkan userId ke dokumen
         });
   
           // Log ID dokumen baru yang dibuat

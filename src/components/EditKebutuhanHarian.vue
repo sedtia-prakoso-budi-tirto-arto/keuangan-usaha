@@ -49,8 +49,9 @@
   </template>
   
   <script>
+  import { getFirestore, query, where, getDocs, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
+  import { getAuth } from 'firebase/auth'
   import { db } from '../../firebase'
-  import { doc, collection, updateDoc, getDoc } from 'firebase/firestore'
   import Swal from 'sweetalert2'
   
   export default {
@@ -75,6 +76,18 @@
           Darurat: 0
         }
       }
+    },
+    async created() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      const db = getFirestore();
+      const q = query(collection(db, 'kebutuhan_harian'), where('userId', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+      
+      this.items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
     },
     async mounted() {
       // Mengambil ID dokumen dari parameter rute
