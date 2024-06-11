@@ -10,7 +10,7 @@
           <button @click="navigateToKelolaKebutuhanHarian" class="btn btn-primary"><i class="fas fa-tasks"></i> Kelola Kebutuhan Harian</button>
         </div>
         <div v-if="isLoggedIn">
-          <p>Sedang login sebagai: <br> {{ currentUser.email }}</p>
+          <p>Sedang login sebagai: <br> {{ currentUser.email }} <br></p>
           <button @click="logout" class="btn btn-primary">Logout</button>
         </div>
       </div>
@@ -119,7 +119,7 @@
   
   <style scoped>
   .main-menu {
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
