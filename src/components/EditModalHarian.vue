@@ -138,7 +138,7 @@ export default {
           // Mengatur data dengan pengecekan tambahan
           this.tanggal = data.tanggal || '';
           this.omset = data.Omset || 0;
-          this.pengeluaran = data.Pengeluaran || 0,
+          this.pengeluaran = data.Pengeluaran || 0;
           this.jumlahTelur = data.jumlahTelur || 0;
           this.jumlahPorsi = data.jumlahPorsi || 0;
           this.hasil = data.modalInfo || '';

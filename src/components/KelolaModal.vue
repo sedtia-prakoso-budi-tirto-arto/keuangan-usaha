@@ -7,6 +7,9 @@
     <div class="total-sewa mb-4">
       <h5><strong>Total Sewa: <span class="text-success">{{ formatRupiah(totalSewa) }}</span></strong></h5>
     </div>
+    <div class="cash-flow mb-4">
+      <h5><strong>Cash Flow: <span class="text-success">{{ formatRupiah(cashFlow) }}</span></strong></h5>
+    </div>
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -25,7 +28,7 @@
         <tbody>
           <tr v-for="(data, index) in dataList" :key="index" class="table-row">
             <td>{{ data.date }}</td>
-            <td>{{ data.tanggal }}</td>
+            <td>{{ formatTanggal(data.tanggal) }}</td>
             <td>{{ data.jumlahTelur }}</td>
             <td>{{ data.jumlahPorsi }}</td>
             <td>{{ formatRupiah(data.totalModal) }}</td>
@@ -68,6 +71,11 @@ export default {
       if (!startTanggal || !endTanggal) return 0; // Jika tidak ada data, kembalikan 0
       const diffInDays = this.getDifferenceInDays(new Date(startTanggal), new Date(endTanggal));
       return diffInDays * 27000; // Hitung total sewa
+    },
+    cashFlow() {
+      const totalModal = this.dataList.reduce((total, data) => total + data.totalModal, 0);
+      const totalPengeluaran = this.dataList.reduce((total, data) => total + data.Pengeluaran, 0);
+      return totalModal - totalPengeluaran;
     }
   },
   created() {
@@ -142,6 +150,13 @@ export default {
         }
         return 'Rp ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
       },
+      formatTanggal(value) {
+      const date = new Date(value);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Januari dimulai dari 0
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
     formatModalInfo(modalInfo) {
       const items = modalInfo.split('<br>')
       let html = '<ul>'
@@ -194,13 +209,16 @@ export default {
 }
 </script>
 
+
 <style scoped>
 .back {
   margin-top: 3%;
 }
 
 .total-profit .text-success,
-.total-sewa .text-success {
+.total-sewa .text-success,
+.cash-flow .text-success {
   color: #28a745;
 }
 </style>
+
