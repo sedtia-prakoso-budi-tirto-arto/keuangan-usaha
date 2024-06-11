@@ -106,31 +106,60 @@ export default {
     };
   },
   async mounted() {
+    // Mengambil ID dokumen dari parameter rute
     const documentId = this.$route.params.id;
+    // Memanggil fungsi untuk mengambil data berdasarkan ID dokumen
     await this.getDataById(documentId);
   },
   methods: {
     async getDataById(id) {
       try {
+        // Referensi ke dokumen dalam koleksi 'history' dengan ID yang diberikan
         const docRef = doc(db, "history", id);
+        // Mendapatkan snapshot dokumen
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
+          // Jika dokumen ada, ambil data dan masukkan ke dalam variabel data komponen
           const data = docSnap.data();
           console.log(data);
-          this.tanggal = data.tanggal;
+
+          // Mengatur data dengan pengecekan tambahan
+          this.tanggal = data.tanggal || '';
           this.omset = data.Omset || 0;
-          this.jumlahTelur = data.jumlahTelur || 0; // Mengatur jumlahTelur sesuai data dokumen atau default 0 jika tidak ada
-          this.jumlahPorsi = data.jumlahPorsi || 0; // Mengatur jumlahPorsi sesuai data dokumen atau default 0 jika tidak ada
-          this.hasil = data.modalInfo;
+          this.jumlahTelur = data.jumlahTelur || 0;
+          this.jumlahPorsi = data.jumlahPorsi || 0;
+          this.hasil = data.modalInfo || '';
+
+          // Memeriksa apakah 'modalInfo' ada dan mengandung data pancong dan topping
+          if (data.modalInfo) {
+            const modalInfo = data.modalInfo;
+            const lines = modalInfo.split('<br>');
+
+            lines.forEach(line => {
+              const match = line.match(/(.+?): \d+ \* (\d+) = \d+/);
+              if (match) {
+                const [_, key, count] = match;
+                if (Object.prototype.hasOwnProperty.call(this.pancong, key)) {
+                  this.pancong[key] = parseInt(count);
+                }
+                if (Object.prototype.hasOwnProperty.call(this.topping, key)) {
+                  this.topping[key] = parseInt(count);
+                }
+              }
+            });
+          }
         } else {
+          // Jika dokumen tidak ditemukan
           this.hasil = "Dokumen tidak ditemukan.";
         }
       } catch (error) {
+        // Jika terjadi kesalahan saat mengambil data
         console.error("Error getting document:", error);
         this.hasil = "Terjadi kesalahan saat mengambil data.";
       }
     },
+
     async hitungTotalHarga() {
       // Validasi input
     if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
