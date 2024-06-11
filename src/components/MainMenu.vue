@@ -58,12 +58,13 @@
     justify-content: center;
     height: 100vh;
     text-align: center;
-    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    color: white;
+    background: white;
+    color: rgba(255, 255, 255, 0.1);
     padding: 2rem;
   }
   
   .content-wrapper {
+    color: #3f454a;
     background: rgba(255, 255, 255, 0.1);
     padding: 2rem;
     border-radius: 10px;
