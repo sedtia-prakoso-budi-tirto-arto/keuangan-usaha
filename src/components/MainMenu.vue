@@ -207,6 +207,10 @@
       height: 4rem;
       margin-top: -0.2rem;
     }
+
+    .out{
+        margin-top: 1.5rem;
+    }
   }
   
   @media (max-width: 480px) {
