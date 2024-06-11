@@ -106,23 +106,6 @@ export default {
       }
     }
   },
-  mounted() {
-    // Periksa apakah pesan selamat datang pernah ditampilkan pada sesi ini
-    const welcomeMessageShown = sessionStorage.getItem('welcomeMessageShown');
-
-    // Jika belum pernah ditampilkan pada sesi ini, tampilkan pesan selamat datang
-    if (!welcomeMessageShown) {
-      Swal.fire({
-        title: 'Selamat Datang!',
-        text: 'Terima kasih telah menggunakan aplikasi Perhitungan Modal Harian.',
-        icon: 'info',
-        confirmButtonText: 'OK'
-      });
-
-      // Tandai bahwa pesan selamat datang sudah ditampilkan pada sesi ini
-      sessionStorage.setItem('welcomeMessageShown', 'true');
-    }
-  },
   methods: {
     async hitungTotalHarga() {
       // Validasi input
