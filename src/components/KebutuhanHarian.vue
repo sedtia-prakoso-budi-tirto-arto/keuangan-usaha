@@ -146,6 +146,7 @@
             gaji: this.gaji,
             lainnya: this.lainnya
           },
+          totalPemasukan: totalPemasukan,
           totalKebutuhan: totalKebutuhan,
           saldo: saldo,
           tanggal: this.tanggal
@@ -168,7 +169,7 @@
       },
       navigateToKelola() {
         Swal.fire({
-          title: 'Memuat Kelola...',
+          title: 'Memuat Kelola Kebutuhan Harian...',
           text: 'Silakan tunggu',
           allowOutsideClick: false,
           didOpen: () => {
@@ -179,7 +180,7 @@
         setTimeout(() => {
           Swal.close();
           // Mengarahkan ke rute KelolaKebutuhan
-          this.$router.push({ name: 'KelolaKebutuhan' });
+          this.$router.push({ name: 'KelolaKebutuhanHarian' });
         }, 750);
       }
     }

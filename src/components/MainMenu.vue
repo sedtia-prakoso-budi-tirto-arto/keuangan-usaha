@@ -61,6 +61,21 @@
           Swal.close();
           this.$router.push({ name: 'KebutuhanHarian' });
         }, 750);
+      },
+      navigateToKelolaKebutuhanHarian() {
+        Swal.fire({
+          title: 'Memuat Kelola Kebutuhan Harian...',
+          text: 'Silakan tunggu',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+  
+        setTimeout(() => {
+          Swal.close();
+          this.$router.push({ name: 'KelolaKebutuhanHarian' });
+        }, 750);
       }
     }
   };
