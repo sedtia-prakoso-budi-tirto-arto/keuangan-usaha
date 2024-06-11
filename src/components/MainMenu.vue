@@ -1,8 +1,8 @@
 <template>
     <div class="main-menu">
       <div class="content-wrapper">
-        <h1>Selamat Datang di Aplikasi Manajemen Modal</h1>
-        <p class="intro-text">Kelola modal harian dan bulanan Anda dengan mudah dan efisien.</p>
+        <h1>Selamat Datang di Aplikasi Manajemen Finansial</h1>
+        <p class="intro-text">Kelola modal bisnis dan keuangan pribadi Anda dengan mudah dan efisien.</p>
         <div class="menu-buttons">
           <button @click="navigateToModalHarian" class="btn btn-primary"><i class="fas fa-coins"></i> Modal Harian</button>
           <button @click="navigateToKelola" class="btn btn-primary"><i class="fas fa-chart-line"></i> Kelola Modal</button>
