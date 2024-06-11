@@ -11,7 +11,7 @@
         </div>
         <div v-if="isLoggedIn">
           <p>Sedang login sebagai: <br> {{ currentUser.email }} <br></p>
-          <button @click="logout" class="btn btn-primary">Logout</button>
+          <button @click="logout" class="out btn btn-primary">Logout</button>
         </div>
       </div>
     </div>
@@ -180,6 +180,10 @@
   .btn-primary:hover {
     background-color: #0056b3;
     transform: scale(1.05);
+  }
+
+  .out{
+    margin-top: 1rem;
   }
   
   /* Media Queries for Responsiveness */
