@@ -92,7 +92,7 @@
     text-align: center;
     background: white;
     color: #3f454a;
-    padding: 2rem;
+    padding: 1rem;
   }
   
   .content-wrapper {
@@ -107,10 +107,10 @@
     margin-bottom: 1rem;
   }
   
-  .fas{
+  .fas {
     margin-right: 0.5rem;
   }
-
+  
   .intro-text {
     font-size: 1.2rem;
     margin-bottom: 2rem;
@@ -144,6 +144,47 @@
   .btn-primary:hover {
     background-color: #0056b3;
     transform: scale(1.05);
+  }
+  
+  /* Media Queries for Responsiveness */
+  @media (max-width: 768px) {
+    .content-wrapper {
+      padding: 0.5rem;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    .intro-text {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    .btn {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .content-wrapper {
+      padding: 0.5rem;
+    }
+  
+    h1 {
+      font-size: 1.5rem;
+    }
+  
+    .intro-text {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+  
+    .btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
   }
   </style>
   
