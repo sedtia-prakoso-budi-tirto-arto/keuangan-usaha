@@ -119,7 +119,7 @@
   
   <style scoped>
   .main-menu {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
