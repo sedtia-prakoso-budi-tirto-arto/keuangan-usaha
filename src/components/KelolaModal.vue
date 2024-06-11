@@ -17,6 +17,7 @@
             <th>Jumlah Porsi</th>
             <th>Total Modal</th>
             <th>Omset</th>
+            <th>Pengeluaran</th>
             <th>Nett Profit</th>
             <th>Aksi</th>
           </tr>
@@ -29,6 +30,7 @@
             <td>{{ data.jumlahPorsi }}</td>
             <td>{{ formatRupiah(data.totalModal) }}</td>
             <td>{{ formatRupiah(data.Omset) }}</td>
+            <td>{{ formatRupiah(data.Pengeluaran) }}</td>
             <td>{{ formatRupiah(calculateNettProfit(data.Omset, data.totalModal)) }}</td>
             <td>
               <div class="btn-group" role="group">
@@ -135,8 +137,11 @@ export default {
       return Omset - totalModal - 27000
     },
     formatRupiah(value) {
-      return 'Rp ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    },
+        if (value === undefined || value === null) {
+          return 'Rp 0';
+        }
+        return 'Rp ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      },
     formatModalInfo(modalInfo) {
       const items = modalInfo.split('<br>')
       let html = '<ul>'

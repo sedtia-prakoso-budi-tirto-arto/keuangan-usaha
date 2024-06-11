@@ -30,9 +30,19 @@
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="omset" class="form-label">Omset:</label>
-      <input type="number" id="omset" v-model="omset" class="form-control">
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="omset" class="form-label">Omset:</label>
+          <input type="number" id="omset" v-model="omset" class="form-control">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="pengeluaran" class="form-label">Pengeluaran:</label>
+          <input type="number" id="pengeluaran" v-model="pengeluaran" class="form-control">
+        </div>
+      </div>
     </div>
 
     <div class="mb-4">
@@ -78,6 +88,7 @@ export default {
       jumlahPorsi: 0,
       hasil: "",
       omset: 0,
+      pengeluaran: 0,
       tanggal: '',
       dataList: [],
       pancong: {
@@ -127,6 +138,7 @@ export default {
           // Mengatur data dengan pengecekan tambahan
           this.tanggal = data.tanggal || '';
           this.omset = data.Omset || 0;
+          this.pengeluaran = data.Pengeluaran || 0,
           this.jumlahTelur = data.jumlahTelur || 0;
           this.jumlahPorsi = data.jumlahPorsi || 0;
           this.hasil = data.modalInfo || '';
@@ -162,11 +174,11 @@ export default {
 
     async hitungTotalHarga() {
       // Validasi input
-    if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
+      if (isNaN(this.jumlahTelur) || this.jumlahTelur <= 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Jumlah telur harus angka positif.'
+        text: 'Isikan jumlah telur.'
       });
       return;
     }
@@ -174,15 +186,15 @@ export default {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Jumlah porsi harus angka positif.'
+        text: 'Isikan jumlah porsi terjual.'
       });
       return;
     }
-    if (isNaN(this.omset) || this.omset <= 0) {
+    if (isNaN(this.pengeluaran) || this.pengeluaran <= 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Omset harus angka positif.'
+        text: 'Isikan Pengeluaran.'
       });
       return;
     }
@@ -291,6 +303,7 @@ export default {
       jumlahPorsi: this.jumlahPorsi,
       jumlahTelur: this.jumlahTelur,
       Omset: this.omset,
+      Pengeluaran: this.pengeluaran,
       tanggal: this.tanggal,
       totalModal: totalHarga
     });
