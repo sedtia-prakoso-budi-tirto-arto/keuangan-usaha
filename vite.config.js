@@ -13,6 +13,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  assetsInclude: ['service-worker.js'],
   // pwa: {
   //   name: 'Modal Harian',
   //   themeColor: '#4DBA87',
