@@ -7,5 +7,12 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  env: {
+    node: true,
+    browser: true,
+  },
+  globals: {
+    process: 'readonly',
   }
 }
